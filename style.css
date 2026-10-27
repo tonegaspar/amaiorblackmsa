@@ -365,3 +365,11 @@ h2{font-size:clamp(31px,5vw,48px);line-height:1.04;margin:0 0 15px;letter-spacin
     white-space:pre;
   }
 }
+
+/* Black MSA: marca principal e plataformas */
+.hero-black-logo{display:block;width:clamp(130px,23vw,210px);height:auto;aspect-ratio:1;object-fit:contain;margin:0 auto 20px;filter:drop-shadow(0 0 18px rgba(255,181,35,.22))}
+.platforms{margin:24px auto 28px;max-width:850px;text-align:center}
+.platforms p{font-size:13px;color:#d2c5a7;margin:0 0 12px}
+.platform-logos{display:flex;align-items:center;justify-content:center;gap:10px 16px;flex-wrap:wrap}
+.platform-logos img{width:clamp(100px,14vw,135px);height:46px;object-fit:contain;max-width:calc(33.33% - 12px)}
+@media(max-width:520px){.hero-black-logo{width:145px;margin-bottom:14px}.platform-logos{gap:6px 8px}.platform-logos img{width:calc(33.33% - 8px);height:38px}.platforms{margin:18px auto 23px}}
