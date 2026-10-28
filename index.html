@@ -56,8 +56,21 @@
       </h1>
 
 
-      <section class="testimonials" aria-label="Depoimentos de participantes">
-        <div class="testimonials-heading">RESULTADOS COMPARTILHADOS POR PARTICIPANTES</div>
+      <div class="top-cta-wrap">
+        <a class="cta" id="cta-top" href="#">
+          <span class="cta-glow"></span>
+          <span class="cta-content">
+            <span class="cta-icon">→</span>
+            <span>
+              <b>ENTRAR NO GRUPO DO ESQUENTA BLACK MSA</b>
+              <small>Hoje, 28/10 às 20h, no grupo</small>
+            </span>
+          </span>
+        </a>
+      </div>
+
+      <section class="testimonials" aria-label="Depoimentos de alunos">
+        <div class="testimonials-heading">RESULTADOS COMPARTILHADOS POR ALUNOS</div>
         <div class="testimonials-window" id="testimonials-window">
           <div class="testimonials-track" id="testimonials-track">
             <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 1"><img src="depoimento-01.png" alt="Depoimento de participante 1" loading="lazy"></button>
@@ -105,7 +118,7 @@
           <span class="cta-content">
             <span class="cta-icon">→</span>
             <span>
-              <b>ENTRAR NO GRUPO DO ESQUENTA</b>
+              <b>ENTRAR NO GRUPO DO ESQUENTA BLACK MSA</b>
               <small>Hoje, 28/10 às 20h, no grupo</small>
             </span>
           </span>
@@ -144,14 +157,18 @@
     // Link oficial do grupo:
     const groupLink = "https://chat.whatsapp.com/Ifx6cqWY2om8mYV2c6xxLe?mode=gi_t";
     const button = document.getElementById("cta");
+    const topButton = document.getElementById("cta-top");
     button.href = groupLink;
+    topButton.href = groupLink;
 
-    button.addEventListener("click", function () {
+    function trackGroupClick() {
       if (typeof fbq === "function") {
         fbq("trackCustom", "ClicouNoGrupo");
         fbq("track", "Lead", {content_name: "Grupo WhatsApp - Esquenta Black Friday MSA 28/10"});
       }
-    });
+    }
+    button.addEventListener("click", trackGroupClick);
+    topButton.addEventListener("click", trackGroupClick);
     // WhatsApp flutuante: clique abre o link; arraste só começa após movimento real.
     const floater = document.getElementById("whatsappFloat");
     const personalWhatsApp = document.getElementById("personalWhatsApp");
