@@ -245,24 +245,23 @@
     const enlarged = document.getElementById('testimonial-large');
     const close = document.getElementById('testimonial-close');
     if (!viewport || !track) return;
-    const original = [...track.children];
-    original.forEach(el => track.appendChild(el.cloneNode(true)));
-    let offset = 0, last = 0, paused = false;
-    const speed = 0.42;
-    function animate(t) {
-      if (!last) last = t;
-      const dt = Math.min(t-last, 50); last = t;
-      if (!paused && !document.hidden && modal.hidden) {
-        offset += speed * dt / 16.67;
-        const cycle = track.scrollWidth / 2;
-        if (cycle) offset %= cycle;
-        track.style.transform = `translate3d(${-offset}px,0,0)`;
-      }
-      requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
+    // Avanço por slide em intervalos: evita animação contínua pesada no iPhone.
+    const slides = [...track.querySelectorAll('.testimonial-slide')];
+    let current = 0;
+    let paused = false;
+    const advance = () => {
+      if (paused || document.hidden || !modal.hidden || !slides.length) return;
+      current = (current + 1) % slides.length;
+      const target = slides[current];
+      const left = target.offsetLeft - (viewport.clientWidth - target.offsetWidth) / 2;
+      viewport.scrollTo({left: Math.max(0, left), behavior: 'smooth'});
+      if (current === 0) viewport.scrollTo({left: 0, behavior: 'smooth'});
+    };
+    const timer = window.setInterval(advance, 3200);
     viewport.addEventListener('mouseenter', () => paused = true);
     viewport.addEventListener('mouseleave', () => paused = false);
+    viewport.addEventListener('touchstart', () => paused = true, {passive:true});
+    viewport.addEventListener('touchend', () => { window.setTimeout(() => paused = false, 4000); }, {passive:true});
     viewport.addEventListener('focusin', () => paused = true);
     viewport.addEventListener('focusout', () => paused = false);
     track.addEventListener('click', e => {
