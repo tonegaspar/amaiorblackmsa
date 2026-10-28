@@ -55,6 +55,31 @@
         <span class="headline-gold">Seu próximo passo começa aqui.</span>
       </h1>
 
+
+      <section class="testimonials" aria-label="Depoimentos de participantes">
+        <div class="testimonials-heading">RESULTADOS COMPARTILHADOS POR PARTICIPANTES</div>
+        <div class="testimonials-window" id="testimonials-window">
+          <div class="testimonials-track" id="testimonials-track">
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 1"><img src="depoimento-01.png" alt="Depoimento de participante 1" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 2"><img src="depoimento-02.png" alt="Depoimento de participante 2" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 3"><img src="depoimento-03.png" alt="Depoimento de participante 3" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 4"><img src="depoimento-04.png" alt="Depoimento de participante 4" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 5"><img src="depoimento-05.png" alt="Depoimento de participante 5" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 6"><img src="depoimento-06.png" alt="Depoimento de participante 6" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 7"><img src="depoimento-07.png" alt="Depoimento de participante 7" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 8"><img src="depoimento-08.png" alt="Depoimento de participante 8" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 9"><img src="depoimento-09.png" alt="Depoimento de participante 9" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 10"><img src="depoimento-10.png" alt="Depoimento de participante 10" loading="lazy"></button>
+            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 11"><img src="depoimento-11.png" alt="Depoimento de participante 11" loading="lazy"></button>
+          </div>
+        </div>
+        <p class="testimonials-hint">Toque em uma imagem para ampliar • Resultados individuais podem variar</p>
+      </section>
+      <div class="testimonial-modal" id="testimonial-modal" role="dialog" aria-modal="true" aria-label="Depoimento ampliado" hidden>
+        <button type="button" class="testimonial-close" id="testimonial-close" aria-label="Fechar imagem">×</button>
+        <img id="testimonial-large" src="depoimento-01.png" alt="Depoimento ampliado">
+      </div>
+
       <div class="platforms" aria-label="Plataformas abordadas na mentoria">
         <p>Aprenda estratégias para vender em plataformas como</p>
         <div class="platform-logos">
@@ -210,6 +235,48 @@
       // O navegador abre diretamente o href do link.
     });
 
+  </script>
+
+  <script>
+  (() => {
+    const viewport = document.getElementById('testimonials-window');
+    const track = document.getElementById('testimonials-track');
+    const modal = document.getElementById('testimonial-modal');
+    const enlarged = document.getElementById('testimonial-large');
+    const close = document.getElementById('testimonial-close');
+    if (!viewport || !track) return;
+    const original = [...track.children];
+    original.forEach(el => track.appendChild(el.cloneNode(true)));
+    let offset = 0, last = 0, paused = false;
+    const speed = 0.42;
+    function animate(t) {
+      if (!last) last = t;
+      const dt = Math.min(t-last, 50); last = t;
+      if (!paused && !document.hidden && modal.hidden) {
+        offset += speed * dt / 16.67;
+        const cycle = track.scrollWidth / 2;
+        if (cycle) offset %= cycle;
+        track.style.transform = `translate3d(${-offset}px,0,0)`;
+      }
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+    viewport.addEventListener('mouseenter', () => paused = true);
+    viewport.addEventListener('mouseleave', () => paused = false);
+    viewport.addEventListener('focusin', () => paused = true);
+    viewport.addEventListener('focusout', () => paused = false);
+    track.addEventListener('click', e => {
+      const btn = e.target.closest('.testimonial-slide');
+      if (!btn) return;
+      const img = btn.querySelector('img');
+      enlarged.src = img.src; enlarged.alt = img.alt;
+      modal.hidden = false; document.body.style.overflow = 'hidden'; close.focus();
+    });
+    function dismiss() { modal.hidden = true; document.body.style.overflow = ''; }
+    close.addEventListener('click', dismiss);
+    modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) dismiss(); });
+  })();
   </script>
 </body>
 </html>
